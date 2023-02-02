@@ -72,7 +72,6 @@ vector <sClient> LoadCleintsDataFromFile(string FileName)
 	}
 	return vClients;
 }
-
 bool FindClientByAccountNumber( sClient&Client)
 {
 	string AccountNumber = ReadClientAccountNumber();
@@ -123,7 +122,7 @@ void AddDataLineToFile(string FileName, string stDataLine)
 		MyFile.close();
 	}
 }
-void AddNewClient(sClient& Client)
+void AddNewClient(sClient Client)
 {	
 	
 	if (FindClientByAccountNumber(Client)==false)
@@ -139,7 +138,7 @@ void AddNewClient(sClient& Client)
 		AddNewClient(Client);
 	}
 }
-void AddClients(sClient& Client)
+void AddClients(sClient Client)
 {
 	char AddMore = 'Y';
 	do
@@ -151,7 +150,6 @@ void AddClients(sClient& Client)
 		cin >> AddMore;
 	} while (toupper(AddMore) == 'Y');
 }
-
 void PrintClientRecord(sClient Client)
 {
 	cout << "| " << setw(15) << left << Client.AccountNumber;
@@ -213,7 +211,7 @@ void GoBackToMainMenu()
 	system("pause>0");
 	ChooseFromMenu();
 }
-void ResultOfMenuCoice(int ChooseFromMenu, vector <sClient> &vClients, sClient& Client)
+void ResultOfMenuCoice(int ChooseFromMenu, vector <sClient> &vClients, sClient Client)
 {
 	if (ChooseFromMenu == enMenu::ShowClientListt)
 	{
@@ -261,5 +259,6 @@ int main()
 	vector <sClient> vClients =LoadCleintsDataFromFile(ClientsFileName);
 	ResultOfMenuCoice(ChooseFromMeny,vClients,Client);
 	system("pause>0");
+	
 	return 0;
 }
