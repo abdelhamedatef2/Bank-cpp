@@ -251,6 +251,7 @@ void ResultOfMenuCoice(int ChooseFromMenu, vector <sClient> &vClients, sClient C
 	}
 }
 
+//
 int main()
 {
 	
