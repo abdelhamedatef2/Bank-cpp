@@ -72,6 +72,86 @@ vector <sClient> LoadCleintsDataFromFile(string FileName)
 	}
 	return vClients;
 }
+
+bool FindClientByAccountNumber( sClient&Client)
+{
+	string AccountNumber = ReadClientAccountNumber();
+	vector <sClient> vClients =LoadCleintsDataFromFile(ClientsFileName);
+	for (sClient C : vClients)
+	{
+		if (C.AccountNumber == AccountNumber)
+		{
+			Client = C;
+			return true;
+		}
+	}
+	return false;
+}
+sClient ReadNewClient()
+{
+	sClient Client;
+	cout << "Enter Account Number? ";
+	// Usage of std::ws will extract allthe whitespace character
+	getline(cin >> ws, Client.AccountNumber);
+	cout << "Enter PinCode? ";
+	getline(cin, Client.PinCode);
+	cout << "Enter Name? ";
+	getline(cin, Client.Name);
+	cout << "Enter Phone? ";
+	getline(cin, Client.Phone);
+	cout << "Enter AccountBalance? ";
+	cin >> Client.AccountBalance;
+	return Client;
+}
+string ConvertRecordToLine(sClient Client, string Seperator ="#//#")
+{
+	string stClientRecord = "";
+	stClientRecord += Client.AccountNumber + Seperator;
+	stClientRecord += Client.PinCode + Seperator;
+	stClientRecord += Client.Name + Seperator;
+	stClientRecord += Client.Phone + Seperator;
+	stClientRecord += to_string(Client.AccountBalance);
+	return stClientRecord;
+}
+void AddDataLineToFile(string FileName, string stDataLine)
+{
+	fstream MyFile;
+	MyFile.open(FileName, ios::out | ios::app);
+	if (MyFile.is_open())
+	{
+		MyFile << stDataLine << endl;
+		MyFile.close();
+	}
+}
+void AddNewClient(sClient& Client)
+{	
+	
+	if (FindClientByAccountNumber(Client)==false)
+	{
+		sClient Client;
+		Client = ReadNewClient();
+		AddDataLineToFile(ClientsFileName,
+		ConvertRecordToLine(Client));
+	}
+	else
+	{
+		cout << "Client already Exist , Enter another account number? \n";
+		AddNewClient(Client);
+	}
+}
+void AddClients(sClient& Client)
+{
+	char AddMore = 'Y';
+	do
+	{
+		system("cls");
+		cout << "Adding New Client:\n\n";
+		AddNewClient( Client);
+		cout << "\nClient Added Successfully, do you want to add more clients ? Y / N ? ";
+		cin >> AddMore;
+	} while (toupper(AddMore) == 'Y');
+}
+
 void PrintClientRecord(sClient Client)
 {
 	cout << "| " << setw(15) << left << Client.AccountNumber;
@@ -133,7 +213,7 @@ void GoBackToMainMenu()
 	system("pause>0");
 	ChooseFromMenu();
 }
-void ResultOfMenuCoice(int ChooseFromMenu, vector <sClient> &vClients)
+void ResultOfMenuCoice(int ChooseFromMenu, vector <sClient> &vClients, sClient& Client)
 {
 	if (ChooseFromMenu == enMenu::ShowClientListt)
 	{
@@ -144,7 +224,7 @@ void ResultOfMenuCoice(int ChooseFromMenu, vector <sClient> &vClients)
 	else if (ChooseFromMenu == enMenu::AddNewClientt)
 	{
 		system("cls");
-	
+		AddClients(Client);
 		GoBackToMainMenu();
 	}
 	else if (ChooseFromMenu == enMenu::DeleteClientt)
@@ -175,9 +255,11 @@ void ResultOfMenuCoice(int ChooseFromMenu, vector <sClient> &vClients)
 
 int main()
 {
+	
+	sClient Client;
 	int ChooseFromMeny = ChooseFromMenu();
 	vector <sClient> vClients =LoadCleintsDataFromFile(ClientsFileName);
-	ResultOfMenuCoice(ChooseFromMeny,vClients);
+	ResultOfMenuCoice(ChooseFromMeny,vClients,Client);
 	system("pause>0");
 	return 0;
 }
