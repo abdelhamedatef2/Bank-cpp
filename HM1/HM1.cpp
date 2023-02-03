@@ -87,6 +87,20 @@ bool FindClientByAccountNumber( sClient&Client)
 	}
 	return false;
 }
+bool FindClientByAccountNumber(string AccountNumber, sClient&Client)
+{
+	vector <sClient> vClients =
+		LoadCleintsDataFromFile(ClientsFileName);
+	for (sClient C : vClients)
+	{
+		if (C.AccountNumber == AccountNumber)
+		{
+			Client = C;
+			return true;
+		}
+	}
+	return false;
+}
 bool FindClientByAccountNumber(string AccountNumber, vector<sClient> vClients, sClient& Client)
 {
 	for (sClient C : vClients)
@@ -373,14 +387,24 @@ void ResultOfMenuCoice(int ChooseFromMenu, vector <sClient> &vClients, sClient C
 	else if (ChooseFromMenu == enMenu::FindClientt)
 	{
 		system("cls");
-
+		sClient Client;
+		string AccountNumber = ReadClientAccountNumber();
+		if (FindClientByAccountNumber(AccountNumber, Client))
+		{
+			PrintClientCard(Client);
+		}
+		else
+		{
+			cout << "\nClient with Account Number (" << AccountNumber <<
+				") is Not Found!";
+		}
 		GoBackToMainMenu();
 	}
 	else if (ChooseFromMenu == enMenu::Exitt)
 	{
 		system("cls");
-
-		GoBackToMainMenu();
+		cout << "==================\n Program End :-) \n==================\n";
+		system("pause>0");
 	}
 }
 
