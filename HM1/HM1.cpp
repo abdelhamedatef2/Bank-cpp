@@ -263,6 +263,52 @@ bool DeleteClientByAccountNumber(string AccountNumber, vector<sClient>& vClients
 		return false;
 	}
 }
+sClient ChangeClientRecord(string AccountNumber)
+{
+	sClient Client;
+	Client.AccountNumber = AccountNumber;
+	cout << "\n\nEnter PinCode? ";
+	getline(cin >> ws, Client.PinCode);
+	cout << "Enter Name? ";
+	getline(cin, Client.Name);
+	cout << "Enter Phone? ";
+	getline(cin, Client.Phone);
+	cout << "Enter AccountBalance? ";
+	cin >> Client.AccountBalance;
+	return Client;
+}
+bool UpdateClientByAccountNumber(string AccountNumber, vector<sClient>& vClients)
+{
+	sClient Client;
+	char Answer = 'n';
+	if (FindClientByAccountNumber(AccountNumber, vClients,
+		Client))
+	{
+		PrintClientCard(Client);
+		cout << "\n\nAre you sure you want update this client? y/n? ";
+			cin >> Answer;
+		if (Answer == 'y' || Answer == 'Y')
+		{
+			for (sClient& C : vClients)
+			{
+				if (C.AccountNumber == AccountNumber)
+				{
+					C = ChangeClientRecord(AccountNumber);
+					break;
+				}
+			}
+			SaveCleintsDataToFile(ClientsFileName, vClients);
+			cout << "\n\nClient Updated Successfully.";
+			return true;
+		}
+	}
+	else
+	{
+		cout << "\nClient with Account Number (" << AccountNumber
+			<< ") is Not Found!";
+		return false;
+	}
+}
 void PrintMainMenu()
 {
 	system("cls");
@@ -318,7 +364,10 @@ void ResultOfMenuCoice(int ChooseFromMenu, vector <sClient> &vClients, sClient C
 	else if (ChooseFromMenu == enMenu::UpdateClientInfoo)
 	{
 		system("cls");
-
+		vector <sClient> vClients =
+		LoadCleintsDataFromFile(ClientsFileName);
+		string AccountNumber = ReadClientAccountNumber();
+		UpdateClientByAccountNumber(AccountNumber, vClients);
 		GoBackToMainMenu();
 	}
 	else if (ChooseFromMenu == enMenu::FindClientt)
@@ -335,14 +384,14 @@ void ResultOfMenuCoice(int ChooseFromMenu, vector <sClient> &vClients, sClient C
 	}
 }
 
-//
+
 int main()
 {
 	
 	sClient Client;
-	int ChooseFromMeny = ChooseFromMenu();
+	int ChoooseFromMenu = ChooseFromMenu();
 	vector <sClient> vClients =LoadCleintsDataFromFile(ClientsFileName);
-	ResultOfMenuCoice(ChooseFromMeny,vClients,Client);
+	ResultOfMenuCoice(ChoooseFromMenu,vClients,Client);
 	system("pause>0");
 	
 	return 0;
