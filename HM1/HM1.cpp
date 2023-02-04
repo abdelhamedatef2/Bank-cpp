@@ -343,7 +343,7 @@ int ChooseFromMenu()
 {
 	PrintMainMenu();
 	int ChooseFromMenu = 0;
-	cout << "Choose what do u want to do ? [1 => 6] :) ?  ";
+	cout << "Choose what do u want to do ? [1 to 6] ?  ";
 	cin >> ChooseFromMenu;
 	return ChooseFromMenu;
 }
@@ -353,29 +353,34 @@ void GoBackToMainMenu()
 	system("pause>0");
 	ChooseFromMenu();
 }
-void ResultOfMenuCoice(int ChooseFromMenu, vector <sClient> &vClients, sClient Client)
+void ResultOfMenuCoice( vector <sClient> &vClients, sClient Client)
 {
-	if (ChooseFromMenu == enMenu::ShowClientListt)
+	if (ChooseFromMenu() == enMenu::ShowClientListt)
 	{
 		system("cls");
 		PrintAllClientsData(vClients);
 		GoBackToMainMenu();
+		ResultOfMenuCoice( vClients, Client);
 	}
-	else if (ChooseFromMenu == enMenu::AddNewClientt)
+	else if (ChooseFromMenu() == enMenu::AddNewClientt)
 	{
 		system("cls");
 		AddClients(Client);
 		GoBackToMainMenu();
+		ResultOfMenuCoice(vClients, Client);
+
 	}
-	else if (ChooseFromMenu == enMenu::DeleteClientt)
+	else if (ChooseFromMenu() == enMenu::DeleteClientt)
 	{
 		system("cls");
 		vector <sClient> vClients =LoadCleintsDataFromFile(ClientsFileName);
 		string AccountNumber = ReadClientAccountNumber();
 		DeleteClientByAccountNumber(AccountNumber, vClients);
 		GoBackToMainMenu();
+		ResultOfMenuCoice(vClients, Client);
+
 	}
-	else if (ChooseFromMenu == enMenu::UpdateClientInfoo)
+	else if (ChooseFromMenu() == enMenu::UpdateClientInfoo)
 	{
 		system("cls");
 		vector <sClient> vClients =
@@ -383,8 +388,10 @@ void ResultOfMenuCoice(int ChooseFromMenu, vector <sClient> &vClients, sClient C
 		string AccountNumber = ReadClientAccountNumber();
 		UpdateClientByAccountNumber(AccountNumber, vClients);
 		GoBackToMainMenu();
+		ResultOfMenuCoice(vClients, Client);
+
 	}
-	else if (ChooseFromMenu == enMenu::FindClientt)
+	else if (ChooseFromMenu() == enMenu::FindClientt)
 	{
 		system("cls");
 		sClient Client;
@@ -399,8 +406,10 @@ void ResultOfMenuCoice(int ChooseFromMenu, vector <sClient> &vClients, sClient C
 				") is Not Found!";
 		}
 		GoBackToMainMenu();
+		ResultOfMenuCoice(vClients, Client);
+
 	}
-	else if (ChooseFromMenu == enMenu::Exitt)
+	else if (ChooseFromMenu() == enMenu::Exitt)
 	{
 		system("cls");
 		cout << "==================\n Program End :-) \n==================\n";
@@ -413,9 +422,8 @@ int main()
 {
 	
 	sClient Client;
-	int ChoooseFromMenu = ChooseFromMenu();
 	vector <sClient> vClients =LoadCleintsDataFromFile(ClientsFileName);
-	ResultOfMenuCoice(ChoooseFromMenu,vClients,Client);
+	ResultOfMenuCoice(vClients,Client);
 	system("pause>0");
 	
 	return 0;
