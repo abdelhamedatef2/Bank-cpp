@@ -343,7 +343,7 @@ int ChooseFromMenu()
 {
 	PrintMainMenu();
 	int ChooseFromMenu = 0;
-	cout << "Choose what do u want to do ? [1 to 6] ?  ";
+	cout << "Choose what do u want to do ? [1 to 6]  ?  ";
 	cin >> ChooseFromMenu;
 	return ChooseFromMenu;
 }
@@ -353,22 +353,23 @@ void GoBackToMainMenu()
 	system("pause>0");
 	ChooseFromMenu();
 }
-void ResultOfMenuCoice( vector <sClient> &vClients, sClient Client)
+void ResultOfMenuCoice()
 {
+	sClient Client;
+	vector <sClient> vClients = LoadCleintsDataFromFile(ClientsFileName);
 	if (ChooseFromMenu() == enMenu::ShowClientListt)
 	{
 		system("cls");
 		PrintAllClientsData(vClients);
 		GoBackToMainMenu();
-		ResultOfMenuCoice( vClients, Client);
+		ResultOfMenuCoice();
 	}
 	else if (ChooseFromMenu() == enMenu::AddNewClientt)
 	{
 		system("cls");
 		AddClients(Client);
 		GoBackToMainMenu();
-		ResultOfMenuCoice(vClients, Client);
-
+		ResultOfMenuCoice();
 	}
 	else if (ChooseFromMenu() == enMenu::DeleteClientt)
 	{
@@ -377,8 +378,7 @@ void ResultOfMenuCoice( vector <sClient> &vClients, sClient Client)
 		string AccountNumber = ReadClientAccountNumber();
 		DeleteClientByAccountNumber(AccountNumber, vClients);
 		GoBackToMainMenu();
-		ResultOfMenuCoice(vClients, Client);
-
+		ResultOfMenuCoice();
 	}
 	else if (ChooseFromMenu() == enMenu::UpdateClientInfoo)
 	{
@@ -388,8 +388,7 @@ void ResultOfMenuCoice( vector <sClient> &vClients, sClient Client)
 		string AccountNumber = ReadClientAccountNumber();
 		UpdateClientByAccountNumber(AccountNumber, vClients);
 		GoBackToMainMenu();
-		ResultOfMenuCoice(vClients, Client);
-
+		ResultOfMenuCoice();
 	}
 	else if (ChooseFromMenu() == enMenu::FindClientt)
 	{
@@ -406,8 +405,7 @@ void ResultOfMenuCoice( vector <sClient> &vClients, sClient Client)
 				") is Not Found!";
 		}
 		GoBackToMainMenu();
-		ResultOfMenuCoice(vClients, Client);
-
+		ResultOfMenuCoice();
 	}
 	else if (ChooseFromMenu() == enMenu::Exitt)
 	{
@@ -420,10 +418,7 @@ void ResultOfMenuCoice( vector <sClient> &vClients, sClient Client)
 
 int main()
 {
-	
-	sClient Client;
-	vector <sClient> vClients =LoadCleintsDataFromFile(ClientsFileName);
-	ResultOfMenuCoice(vClients,Client);
+	ResultOfMenuCoice();
 	system("pause>0");
 	
 	return 0;
