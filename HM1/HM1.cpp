@@ -12,7 +12,7 @@ struct sClient
 	string PinCode;
 	string Name;
 	string Phone;
-	double AccountBalance;
+	double AccountBalance ;
 	bool MarkForDelete = false;
 };
 string ReadClientAccountNumber()
@@ -347,16 +347,18 @@ int ChooseFromMenu()
 	cin >> ChooseFromMenu;
 	return ChooseFromMenu;
 }
+
 void GoBackToMainMenu()
 {
 	cout << "Press any key to back to main menu ...";
 	system("pause>0");
-	ChooseFromMenu();
 }
 void ResultOfMenuCoice()
-{
+{	
+	ChooseFromMenu();
 	sClient Client;
 	vector <sClient> vClients = LoadCleintsDataFromFile(ClientsFileName);
+
 	if (ChooseFromMenu() == enMenu::ShowClientListt)
 	{
 		system("cls");
@@ -417,9 +419,8 @@ void ResultOfMenuCoice()
 
 
 int main()
-{
+{	
 	ResultOfMenuCoice();
 	system("pause>0");
-	
 	return 0;
 }
